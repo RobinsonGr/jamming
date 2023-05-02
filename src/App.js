@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import Nav from "./Nav";
 import TrackList from "./TrackList";
 import PlayList from "./PlayList";
+import API from "./api";
 
 class App extends React.Component {
 
@@ -39,15 +40,13 @@ class App extends React.Component {
 
   render() {
 
-
-    
-
   const togglePlayListTrack = (song) => {
   
     let songListModified = [...this.state.songList];
     let playListModified = [...this.state.playList.tracks];
     
     const songInPlayList = playListModified.includes(song);
+
 
   
       if(songInPlayList) {
@@ -73,6 +72,9 @@ class App extends React.Component {
       )
 
   };
+
+ 
+
 
   const reNamePlayList = (e) => {
 
@@ -126,6 +128,7 @@ class App extends React.Component {
       reNamePlayList={reNamePlayList}
       playList={this.state.playList} 
       togglePlayListTrack={togglePlayListTrack} />
+      <API></API>
       </>
     );
 
