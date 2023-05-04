@@ -3,6 +3,7 @@ import Nav from "./Nav";
 import TrackList from "./TrackList";
 import PlayList from "./PlayList";
 import API from "./api";
+import getSearch from "./SearchResults";
 
 class App extends React.Component {
 
@@ -70,6 +71,8 @@ class App extends React.Component {
           tracks: playListModified}
         })  
       )
+
+      getSearch("eminem")
 
   };
 
