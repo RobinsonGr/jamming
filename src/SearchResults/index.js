@@ -8,7 +8,7 @@ async function getSearch(query) {
     const responseList = await requestList.json();
     const trackList = responseList.data.slice(0,8)
 
-    console.log(trackList)
+    return trackList
 
    
 

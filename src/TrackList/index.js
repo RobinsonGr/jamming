@@ -6,13 +6,13 @@ class  TrackList extends React.Component {
 
     render() {
 
-        const {songList, togglePlayListTrack} = this.props;
+        const {currentTrackList, togglePlayListTrack, } = this.props;
 
         return (
             <div> 
             <h1>Results</h1>
             {
-                songList.map(song => (
+                currentTrackList.map(song => (
 
                     <>                     
                    <Track

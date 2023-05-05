@@ -1,9 +1,10 @@
-import React, {useState} from "react"
+import React from "react"
 import Nav from "./Nav";
 import TrackList from "./TrackList";
 import PlayList from "./PlayList";
 import API from "./api";
 import getSearch from "./SearchResults";
+import SearchBar from "./SearchBar"
 
 class App extends React.Component {
 
@@ -11,74 +12,92 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      songList: [
-        {
-          id: 0,
-          title: "Lose You To Love Me",
-          description: "Rare by Selena Gomez",
-          onPlayList: false
-        },
-        {
-          id: 1,
-          title: "Blinding Lights",
-          description: "After Hours by The Weeknd",
-          onPlayList: false
-        },
-        {
-          id: 2,
-          title: "Levitating",
-          description: "Future Nostalgia by Dua Lipa",
-          onPlayList: false
-        }
+      currentTrackList: [
       ],
-      playList: {
-       name: "",
-       tracks: []
-
+      playList: [],
+      savePlaylist: {
+        name: "",
+        tracks: []
       }
     }
   }
 
+  
+
+
   render() {
+    //TrackList render & state
+
+  const  updateCurrentTrackList = async (e) => {
+
+  const value = e.target.value;
+
+  if (!value) {
+    return
+  } 
+
+  const requestNewCurrentTrackList= await getSearch(value)
+
+  const newCurrentTrackList = [];
+   requestNewCurrentTrackList.map( ({id, title, album, artist}) => {
+
+     newCurrentTrackList.push({
+       id: id,
+       title: title,
+       artist: artist.name,
+       album: album.title,
+       onPlayList: false,
+      })
+   })
+  
+  this.setState(prevState =>  (
+   {
+       ...prevState,
+       currentTrackList: [...newCurrentTrackList],         
+      })
+   )
+
+  }
+
+
+// CurrentTrackList to PlayList
 
   const togglePlayListTrack = (song) => {
+
   
-    let songListModified = [...this.state.songList];
-    let playListModified = [...this.state.playList.tracks];
+  
+    let currentTrackListModified = [...this.state.currentTrackList];
+    let playListModified = [...this.state.playList];
     
     const songInPlayList = playListModified.includes(song);
 
 
-  
       if(songInPlayList) {
 
-        songListModified.push(song) 
+        currentTrackListModified.push(song) 
         playListModified = playListModified.filter(track => track.title !== song.title);
         song.onPlayList = false;
 
       } else {
 
         playListModified.push(song) 
-        songListModified = songListModified.filter(track => track.title !== song.title);
+        currentTrackListModified = currentTrackListModified.filter(track => track.title !== song.title);
         song.onPlayList = true;
 
       }
 
       this.setState(actualState => ({
-        songList: songListModified, 
-        playList: {
-          ...actualState.playList,
-          tracks: playListModified}
+        currentTrackList: currentTrackListModified, 
+        playList: playListModified
         })  
       )
 
-      getSearch("eminem")
 
   };
 
  
 
-
+//Save PlayList custom name in state
   const reNamePlayList = (e) => {
 
     const currentValue = e.target.value;
@@ -87,48 +106,52 @@ class App extends React.Component {
       return (
         {
           ...actualState,
-          playList: {
-            ...actualState.playList,
+          savePlayList: {
+            ...actualState.savePlayList,
             name: currentValue
           }
         }
       )
     })
+
   }
 
+  //Save PlayList Tracks in State
   const savePlayList = () => {
+
 
     this.setState(actualState => ({
       ...actualState,
-      playList: {
-        name: "",
-        tracks: [],
+      playList: [],
+      savePlayList: {
+        ...actualState.savePlayList,
+        tracks: actualState.playList
       }
     })
 
     )
     
+    console.log(this.state.savePlayList)
     console.log(this.state.playList)
 
   }
-
-  const uriList = [
-    "1Qrg8KqiBpW07V7PNxwwwL",
-    "1wAXODAAL6hY64ZdhrnjBO",
-    "6PQ88X9TkUIAUIZJHW2upE",
-    "6UelLqGlWMcVH1E5c4H7lY"
-  ]
-
 
   
     return (
       <>
       <Nav></Nav>
-      <p>Hello World</p>
-      <TrackList songList={this.state.songList} togglePlayListTrack={togglePlayListTrack}/>
+      <SearchBar
+        updateCurrentTrackList={updateCurrentTrackList}
+      ></SearchBar>
+      <TrackList 
+      currentTrackList={this.state.currentTrackList} 
+      togglePlayListTrack={togglePlayListTrack}
+      
+      
+      />
       <PlayList 
-      onSavePlayList={savePlayList}
       reNamePlayList={reNamePlayList}
+      onSavePlayList={savePlayList}
       playList={this.state.playList} 
       togglePlayListTrack={togglePlayListTrack} />
       <API></API>

@@ -11,7 +11,7 @@ render () {
     <>  
      <div> 
       <h3>{song.title}</h3> 
-      <p>{song.description}</p>
+      <p>{`${song.album} | ${song.artist}`}</p>
       <button
        onClick={() => {togglePlayListTrack(song)}}
       >{Boolean(song.onPlayList) ? "-" : "+"}</button>
