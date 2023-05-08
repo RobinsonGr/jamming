@@ -2,7 +2,6 @@ import React from "react"
 import Nav from "./Nav";
 import TrackList from "./TrackList";
 import PlayList from "./PlayList";
-import API from "./api";
 import getSearch from "./SearchResults";
 import SearchBar from "./SearchBar"
 
@@ -23,8 +22,7 @@ class App extends React.Component {
   }
 
   
-
-
+  
   render() {
     //TrackList render & state
 
@@ -130,10 +128,6 @@ class App extends React.Component {
     })
 
     )
-    
-    console.log(this.state.savePlayList)
-    console.log(this.state.playList)
-
   }
 
   
@@ -146,15 +140,15 @@ class App extends React.Component {
       <TrackList 
       currentTrackList={this.state.currentTrackList} 
       togglePlayListTrack={togglePlayListTrack}
-      
-      
+      boolean={false}
       />
+      
       <PlayList 
       reNamePlayList={reNamePlayList}
       onSavePlayList={savePlayList}
       playList={this.state.playList} 
       togglePlayListTrack={togglePlayListTrack} />
-      <API></API>
+     
       </>
     );
 

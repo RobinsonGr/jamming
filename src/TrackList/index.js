@@ -16,6 +16,7 @@ class  TrackList extends React.Component {
 
                     <>                     
                    <Track
+                   
                    key={song.id}
                    togglePlayListTrack={togglePlayListTrack}
                    song={song}  

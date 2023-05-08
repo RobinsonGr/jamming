@@ -1,8 +1,9 @@
 import React from "react";
 
 
+export const Context = React.createContext()
 
-class API extends React.Component {
+class Auth extends React.Component {
 
     // Initially I thought of using the popstate event Listeneer because in the codeAcademy program  at this point the lifeCycle methods had not yet been seen, much less the useEffect hook. So I finally wanted to go ahead and incorporate the most logical way I had known since before
     componentDidMount() {
@@ -20,11 +21,12 @@ class API extends React.Component {
     }
 
      redirectToDeezer = () => {
-        const app_id = 601224 ;
+        const app_id = 601224;
         const redirect_uri = "http://localhost:3000/";
         const authURL= `https://connect.deezer.com/oauth/auth.php?app_id=${app_id}&redirect_uri=${redirect_uri}`
         //To start a new tab
         window.location.href = authURL;
+        console.log("Here it's!")
      }
 
 
@@ -49,15 +51,23 @@ class API extends React.Component {
 
         //window.location.href = "/"
        
-        console.log(token2.expires);
+        console.log(token2);
      }
 
      
      
 
     render () {
+        const {children} = this.props;
+
+        const values = {
+            redirectToDeezer: this.redirectToDeezer,
+        }
+
         return (
-            <button onClick={this.redirectToDeezer}> ¡Let's Start!</button>
+            <Context.Provider value={values}> 
+            {children}
+            </Context.Provider>
         )
 
     }
@@ -66,4 +76,4 @@ class API extends React.Component {
 }
 
 
-export default API
+export default Auth;

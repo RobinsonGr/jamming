@@ -1,5 +1,6 @@
 import React from "react";
 import Track from "../Track"
+import injectContext from "../Context/injectContext";
 
 
 
@@ -7,14 +8,16 @@ class PlayList extends React.Component {
 
  
 
-    render () {
+    render () {    
+        const {togglePlayListTrack, playList, reNamePlayList, onSavePlayList, context} = this.props;
 
+        
+       const savePlayListDeezer =  async () => {
 
-    
-        const {togglePlayListTrack, playList, reNamePlayList, onSavePlayList} = this.props;
+        context.redirectToDeezer()
 
-       
-
+        }
+        
         return(
           
             <div> 
@@ -32,7 +35,7 @@ class PlayList extends React.Component {
                 )
                 )
             }
-            <button onClick={onSavePlayList}>Save PlayList</button>
+            <button onClick={savePlayListDeezer}>Save PlayList</button>
             </div>
        
         )
@@ -42,4 +45,4 @@ class PlayList extends React.Component {
     
 }
 
-export default PlayList;
+export default injectContext(PlayList);
