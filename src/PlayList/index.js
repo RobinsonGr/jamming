@@ -12,9 +12,15 @@ class PlayList extends React.Component {
         const {togglePlayListTrack, playList, reNamePlayList, onSavePlayList, context} = this.props;
 
         
-       const savePlayListDeezer =  async () => {
+        const deezerConnect = async () => {
+            await context.redirectToDeezer();
+        }
 
-        context.redirectToDeezer()
+
+        const savePlayListDeezer =  async () => {   
+             if(context.tokenExist) {
+                await onSavePlayList();
+            }
 
         }
         
@@ -35,9 +41,16 @@ class PlayList extends React.Component {
                 )
                 )
             }
-            <button onClick={savePlayListDeezer}>Save PlayList</button>
+            
+            {
+                Boolean(context.tokenExist) ? (
+                    <button onClick={savePlayListDeezer}>Save PlayList</button>
+                ) : (
+                    <button onClick={deezerConnect}>Connect with Deezer</button>
+                )
+            }
+
             </div>
-       
         )
 
     }

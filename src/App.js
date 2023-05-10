@@ -4,6 +4,7 @@ import TrackList from "./TrackList";
 import PlayList from "./PlayList";
 import getSearch from "./SearchResults";
 import SearchBar from "./SearchBar"
+import { uploadRemotePlayList } from "./Context/deezerAPI";
 
 class App extends React.Component {
 
@@ -115,19 +116,20 @@ class App extends React.Component {
   }
 
   //Save PlayList Tracks in State
-  const savePlayList = () => {
+  const savePlayList = async () => {
 
 
     this.setState(actualState => ({
       ...actualState,
       playList: [],
       savePlayList: {
-        ...actualState.savePlayList,
+        ...actualState.savePlaylist,
         tracks: actualState.playList
       }
     })
-
     )
+
+    await uploadRemotePlayList(this.state.savePlaylist.tracks)
   }
 
   
@@ -148,7 +150,6 @@ class App extends React.Component {
       onSavePlayList={savePlayList}
       playList={this.state.playList} 
       togglePlayListTrack={togglePlayListTrack} />
-     
       </>
     );
 

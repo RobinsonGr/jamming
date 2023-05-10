@@ -20,9 +20,6 @@ function injectContext (ComponentToInject) {
                 )
             )
         }
-
-
-
     }
 
 

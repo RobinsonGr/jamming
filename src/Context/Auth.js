@@ -3,7 +3,12 @@ import React from "react";
 
 export const Context = React.createContext()
 
+
 class Auth extends React.Component {
+
+    state = {
+        tokenExist: false,
+    }
 
     // Initially I thought of using the popstate event Listeneer because in the codeAcademy program  at this point the lifeCycle methods had not yet been seen, much less the useEffect hook. So I finally wanted to go ahead and incorporate the most logical way I had known since before
     componentDidMount() {
@@ -26,7 +31,6 @@ class Auth extends React.Component {
         const authURL= `https://connect.deezer.com/oauth/auth.php?app_id=${app_id}&redirect_uri=${redirect_uri}`
         //To start a new tab
         window.location.href = authURL;
-        console.log("Here it's!")
      }
 
 
@@ -42,16 +46,24 @@ class Auth extends React.Component {
             code: code,
           });
          
+
+        //Using my proxy server to avoid the CORS problem without VPN
          const tokenResponse = await fetch(`http://localhost:5000/get-token?${queryParams.toString()}`, {
              method: "POST",                
             })
 
-        //const token = await tokenResponse.text();
-        const token2 = await tokenResponse.json();
+        const {token} = await tokenResponse.json();
 
-        //window.location.href = "/"
+
+        //Storage the token in localStorage for access it everywhere 
+
+        if (typeof token == "string") {
+
+            localStorage.setItem("token", token) 
+            this.setState({tokenExist: true})
+    
+        } 
        
-        console.log(token2);
      }
 
      
@@ -62,6 +74,8 @@ class Auth extends React.Component {
 
         const values = {
             redirectToDeezer: this.redirectToDeezer,
+            tokenExist: this.state.tokenExist,
+            test: "works"
         }
 
         return (
